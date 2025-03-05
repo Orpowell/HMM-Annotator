@@ -1,8 +1,11 @@
 import argparse
 import os
 import sys
-
+import warnings
+from Bio import BiopythonWarning
 from genome_annotator import annotate_genome
+
+warnings.filterwarnings("ignore", category=BiopythonWarning)
 
 def is_valid_file(parser, arg):
     if not os.path.exists(arg):
