@@ -7,6 +7,10 @@ from chunk_annotator import GenomeChunk
 from chopper import genome_chopper
 import pandas as pd
 import logging
+import sys
+
+logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S',
+                    level=logging.INFO)
 
 def analyse_chunk(PFAM: str, tmp: str, chunk_path: str) -> None:
     try:
@@ -38,7 +42,11 @@ def annotate_genome(
     
     tmpdir = f"{os.getcwd()}/tmp_hmm_annotator"
 
+    logging.info(f"Generating temporary directory... ({tmpdir})")
+
     os.makedirs(tmpdir, exist_ok=True)
+
+    logging.info(f"Splitting sequences into chunks... ({window_size} bp with {overlap} bp overlaps)")
 
     genome_chopper(genome=genome, window_size=window_size, overlap=overlap, tmp=tmpdir)
 
@@ -60,12 +68,20 @@ def annotate_genome(
 
     chunk_pool = glob.glob(rf"{tmpdir}/*.fasta")
 
+    logging.info("Annotating chunks...")
+
     pool = multiprocessing.get_context("spawn").Pool(processes=cores)
     pool.map(partial(analyse_chunk, pfam, tmpdir), chunk_pool)
 
+    logging.info("Merging annotations...")
+
     merge_annotations(dir=tmpdir, output=output, bed=bed)
+
+    logging.info(f"Removing temporary directory... ({tmpdir})")
 
     try:
         shutil.rmtree(tmpdir)
     except OSError as e:
-        print(f"Error: {e.filename} - {e.strerror}.")
+        logging.error(f"Error: {e.filename} - {e.strerror}.")
+    
+    logging.info("All processes finsihed...")
