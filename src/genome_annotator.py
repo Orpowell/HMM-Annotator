@@ -5,9 +5,8 @@ import glob
 from functools import partial
 from chunk_annotator import GenomeChunk
 from chopper import genome_chopper
-
-
 import pandas as pd
+import logging
 
 def analyse_chunk(PFAM: str, tmp: str, chunk_path: str) -> None:
     try:
@@ -44,10 +43,20 @@ def annotate_genome(
     genome_chopper(genome=genome, window_size=window_size, overlap=overlap, tmp=tmpdir)
 
     if cores > multiprocessing.cpu_count():
-        print(
-            f"Too many cores specified {cores}! {multiprocessing.cpu_count()} cores will be used"
+
+        available_cores = multiprocessing.cpu_count()
+
+        requested_cores = round(available_cores / 4) - 1
+
+        logging.info(
+            f"More cores specified ({cores}) than available! A total of {requested_cores*4} cores will be used instead. To avoid this message, specify {requested_cores} for the --cores parameter nextime)"
         )
-        cores = multiprocessing.cpu_count()
+        
+        if requested_cores < 1:
+            cores = 1
+
+        cores = requested_cores
+
 
     chunk_pool = glob.glob(rf"{tmpdir}/*.fasta")
 
