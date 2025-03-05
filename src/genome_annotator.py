@@ -16,7 +16,7 @@ def analyse_chunk(PFAM: str, tmp: str, chunk_path: str) -> None:
     except ValueError:
         print(f"WARNING! Could not process {chunk_path} - likely Alphabet error...")
 
-def merge_annotations(dir: str, output: str):
+def merge_annotations(dir: str, output: str, bed: str|None):
     data_files = glob.glob(rf"{dir}/*.bed")
 
     with open(output, "w") as outfile:
@@ -26,18 +26,20 @@ def merge_annotations(dir: str, output: str):
     
     df = pd.read_csv(output, sep="\t", header=None)
     df.sort_values(by=[0,1], inplace=True)
-    print(df.head(10))
-    df[3] = [f"{i}_bf_{n}" for n,i in enumerate(df[0])]
-    print(df.head(10))
-    df.to_csv(output, header=False, index=False, sep="\t")
+    df.to_csv(output, header=False, index=False, sep="\t", columns=[0,3,5,1,2])
+
+    if bed is not None:
+        df.reset_index(inplace=True, drop=True)
+        df[3] = [f"{row[3]}_{index+1}" for index,row in df.iterrows()]
+        df.to_csv(bed, header=False, index=False, sep="\t")
 
 def annotate_genome(
-    pfam: str, genome: str, window_size: int, overlap: int, cores: int
+    pfam: str, genome: str, window_size: int, overlap: int, cores: int, output: str, bed: str|None
 ) -> None:
     
     tmpdir = f"{os.getcwd()}/tmp_hmm_annotator"
 
-    os.mkdir(tmpdir)
+    os.makedirs(tmpdir, exist_ok=True)
 
     genome_chopper(genome=genome, window_size=window_size, overlap=overlap, tmp=tmpdir)
 
@@ -52,7 +54,7 @@ def annotate_genome(
     pool = multiprocessing.get_context("spawn").Pool(processes=cores)
     pool.map(partial(analyse_chunk, pfam, tmpdir), chunk_pool)
 
-    merge_annotations(dir=tmpdir, output="annotations.bed")
+    merge_annotations(dir=tmpdir, output=output, bed=bed)
 
     try:
         shutil.rmtree(tmpdir)

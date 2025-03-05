@@ -67,6 +67,25 @@ def main():
         required=False,
     )
 
+    parser.add_argument(
+        "-o",
+        "--output",
+        metavar="\b",
+        type=str,
+        help="Output txt file of HMM annotations",
+        required=True,
+    )
+
+    parser.add_argument(
+        "-b",
+        "--bed",
+        metavar="\b",
+        default=None,
+        type=str,
+        help="Output BED file of HMM annotations",
+        required=False,
+    )
+
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
@@ -80,7 +99,9 @@ def main():
         window_size=args.window,
         overlap=args.overlap,
         cores=args.cores,
-    )
+        output=args.output,
+        bed=args.bed
+        )
 
 
 if __name__ == "__main__":
