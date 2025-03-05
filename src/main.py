@@ -14,70 +14,65 @@ def is_valid_file(parser, arg):
 
 def main():
     parser = argparse.ArgumentParser()
-    sub_parsers = parser.add_subparsers(dest="command", prog="Tool")
 
     #############
     # Annotator #
     #############
 
-    annotator_parser = sub_parsers.add_parser(
-        "annotator", help="Annotate Pfam domains across the genome"
-    )
-
-    annotator_parser.add_argument(
+    parser.add_argument(
         "-p",
         "--pfam",
         metavar="\b",
         type=lambda x: is_valid_file(parser, x),
-        help="Pfam hmm",
+        help="HMM Profile(s)",
         required=True,
     )
 
-    annotator_parser.add_argument(
-        "-g",
-        "--genome",
+    parser.add_argument(
+        "-s",
+        "--sequences",
         metavar="\b",
         type=lambda x: is_valid_file(parser, x),
         help="Path to genome",
         required=True,
     )
 
-    annotator_parser.add_argument(
+    parser.add_argument(
         "-o",
         "--output",
         metavar="\b",
         type=str,
         help="Path to output directory",
-        required=True,
+        default=os.getcwd(),
     )
 
-    annotator_parser.add_argument(
+    parser.add_argument(
         "-w",
         "--window",
         metavar="\b",
         default=100000,
         type=int,
-        help="Path to output directory",
+        help="Window size (Default: 100000 bp)",
         required=False,
     )
 
-    annotator_parser.add_argument(
+    parser.add_argument(
         "-l",
         "--overlap",
         metavar="\b",
         default=100,
         type=int,
-        help="Path to output directory",
+        help="overlap between windows (Default: 100 bp)",
         required=False,
     )
 
-    annotator_parser.add_argument(
+    parser.add_argument(
         "-c",
         "--cores",
         metavar="\b",
         default=1,
         type=int,
-        help="Number of Cores. Note! This should a 1/4th of the cores you wish to allocate to the process",
+        help="Number of Cores. Note! This should a 1/4th of the total cores you wish to allocate to the tool",
         required=False,
     )
 
@@ -87,15 +82,15 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "annotator":
-        annotate_genome(
-            pfam=args.pfam,
-            genome=args.genome,
-            outdir=args.output,
-            window_size=args.window,
-            overlap=args.overlap,
-            cores=args.cores,
-        )
+
+    annotate_genome(
+        pfam=args.pfam,
+        genome=args.sequences,
+        outdir=args.output,
+        window_size=args.window,
+        overlap=args.overlap,
+        cores=args.cores,
+    )
 
 
 if __name__ == "__main__":
