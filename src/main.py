@@ -2,10 +2,15 @@ import argparse
 import os
 import sys
 import warnings
+import logging
 from Bio import BiopythonWarning
 from genome_annotator import annotate_genome
 
+
 warnings.filterwarnings("ignore", category=BiopythonWarning)
+
+logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S',
+                    level=logging.INFO)
 
 def is_valid_file(parser, arg):
     if not os.path.exists(arg):
@@ -108,8 +113,6 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        main()
-        sys.exit(0)
-    except:
-        sys.exit(1)
+    main()
+    sys.exit(0)
+

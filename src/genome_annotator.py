@@ -7,10 +7,7 @@ from chunk_annotator import GenomeChunk
 from chopper import genome_chopper
 import pandas as pd
 import logging
-import sys
 
-logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S',
-                    level=logging.INFO)
 
 def analyse_chunk(PFAM: str, tmp: str, chunk_path: str) -> None:
     try:
