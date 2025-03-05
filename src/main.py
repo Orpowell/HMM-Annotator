@@ -9,8 +9,13 @@ from genome_annotator import annotate_genome
 
 warnings.filterwarnings("ignore", category=BiopythonWarning)
 
-logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S',
-                    level=logging.INFO)
+logging.basicConfig(
+    stream=sys.stdout,
+    format="%(asctime)s - %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+    level=logging.INFO,
+)
+
 
 def is_valid_file(parser, arg):
     if not os.path.exists(arg):
@@ -100,7 +105,6 @@ def main():
 
     args = parser.parse_args()
 
-
     annotate_genome(
         pfam=args.pfam,
         genome=args.sequences,
@@ -108,11 +112,10 @@ def main():
         overlap=args.overlap,
         cores=args.cores,
         output=args.output,
-        bed=args.bed
-        )
+        bed=args.bed,
+    )
 
 
 if __name__ == "__main__":
     main()
     sys.exit(0)
-

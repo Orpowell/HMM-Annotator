@@ -1,5 +1,6 @@
 from Bio import SeqIO
 
+
 def genome_chopper(genome: str, window_size: int, overlap: int, tmp: str) -> None:
     pusher: int = window_size - overlap
 
