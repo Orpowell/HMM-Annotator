@@ -1,0 +1,3 @@
+test-run/
+src/__pycache__
+*.sh
