@@ -134,10 +134,8 @@ class GenomeChunk:
         # Merge forward and reverse strand annotations
         df = pd.concat([forward_annotations, reverse_annotations], axis=0)
 
-        if len(df) == 0:
-            print(f"No annotations in : {self.chunk}")
-
-        else:
+        if len(df) > 0:
+            
             df.drop_duplicates(subset=[0, 2, 4, 5, 6], inplace=True, keep="first")
             df[9] = np.where(df[6] == "+", "255,0,0", "0,0,225")
 
