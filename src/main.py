@@ -38,15 +38,6 @@ def main():
     )
 
     parser.add_argument(
-        "-o",
-        "--output",
-        metavar="\b",
-        type=str,
-        help="Path to output directory",
-        default=os.getcwd(),
-    )
-
-    parser.add_argument(
         "-w",
         "--window",
         metavar="\b",
@@ -86,7 +77,6 @@ def main():
     annotate_genome(
         pfam=args.pfam,
         genome=args.sequences,
-        outdir=args.output,
         window_size=args.window,
         overlap=args.overlap,
         cores=args.cores,

@@ -26,13 +26,16 @@ def merge_annotations(dir: str, output: str):
     
     df = pd.read_csv(output, sep="\t", header=None)
     df.sort_values(by=[0,1], inplace=True)
+    print(df.head(10))
     df[3] = [f"{i}_bf_{n}" for n,i in enumerate(df[0])]
+    print(df.head(10))
     df.to_csv(output, header=False, index=False, sep="\t")
 
 def annotate_genome(
-    pfam: str, genome: str, outdir: str, window_size: int, overlap: int, cores: int
+    pfam: str, genome: str, window_size: int, overlap: int, cores: int
 ) -> None:
-    tmpdir = f"{outdir}/tmp-ka"
+    
+    tmpdir = f"{os.getcwd()}/tmp_hmm_annotator"
 
     os.mkdir(tmpdir)
 
@@ -49,7 +52,7 @@ def annotate_genome(
     pool = multiprocessing.get_context("spawn").Pool(processes=cores)
     pool.map(partial(analyse_chunk, pfam, tmpdir), chunk_pool)
 
-    merge_annotations(dir=tmpdir, output=f"{outdir}/annotations.bed")
+    merge_annotations(dir=tmpdir, output="annotations.bed")
 
     try:
         shutil.rmtree(tmpdir)
