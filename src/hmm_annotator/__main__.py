@@ -4,7 +4,7 @@ import sys
 import warnings
 import logging
 from Bio import BiopythonWarning
-from genome_annotator import annotate_genome
+from .genome_annotator import annotate_genome
 
 
 warnings.filterwarnings("ignore", category=BiopythonWarning)

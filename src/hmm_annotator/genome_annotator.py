@@ -3,8 +3,8 @@ import shutil
 import os
 import glob
 from functools import partial
-from chunk_annotator import GenomeChunk
-from chopper import genome_chopper
+from .chunk_annotator import GenomeChunk
+from .chopper import genome_chopper
 import pandas as pd
 import logging
 
