@@ -62,7 +62,7 @@ def annotate_genome(
         requested_cores = round(available_cores / 4) - 1
 
         logging.info(
-            f"More cores specified ({cores}) than available! A total of {requested_cores*4} cores will be used instead. To avoid this message, specify {requested_cores} for the --cores parameter nextime)"
+            f"More cores specified ({cores}) than available! A total of {requested_cores*4} cores will be used instead. (To avoid this message, specify for the --cores {requested_cores} parameter)"
         )
 
         if requested_cores < 1:
