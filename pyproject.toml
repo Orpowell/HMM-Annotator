@@ -20,6 +20,7 @@ dynamic = ["version", "dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
+version = {attr = "src.hmm_annotator.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["."]

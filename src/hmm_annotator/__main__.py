@@ -5,7 +5,7 @@ import warnings
 import logging
 from Bio import BiopythonWarning
 from .genome_annotator import annotate_genome
-
+from .__init__ import __version__
 
 warnings.filterwarnings("ignore", category=BiopythonWarning)
 
@@ -26,11 +26,17 @@ def is_valid_file(parser, arg):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog="HMM-Annotator")
 
     #############
     # Annotator #
     #############
+    parser.add_argument(
+        '-v',
+        '--version', 
+        action='version', 
+        version='%(prog)s {version}'.format(version=__version__)
+    )
 
     parser.add_argument(
         "-p",
