@@ -12,7 +12,6 @@ class GenomeChunk:
         record = next(SeqIO.parse(chunk_path, "fasta"))
 
         chunk_info = record.id.split("-")
-
         self.chunk = record.id
         self.chromosome: str = chunk_info[0]
         self.start: int = int(chunk_info[1])
@@ -137,10 +136,8 @@ class GenomeChunk:
         if len(df) > 0:
             df.drop_duplicates(subset=[0, 2, 4, 5, 6], inplace=True, keep="first")
             df[9] = np.where(df[6] == "+", "255,0,0", "0,0,225")
-
-            filtered_df = df[df[3] < 1e-3]
-            filtered_df.sort_values(by=4, inplace=True)
-            filtered_df.to_csv(
+            df = df.sort_values(by=4, inplace=True)
+            df.to_csv(
                 f"{self.tmp}/{self.chunk}.bed",
                 sep="\t",
                 columns=[0, 4, 5, 2, 3, 6, 4, 5, 9],
