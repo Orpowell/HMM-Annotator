@@ -26,17 +26,17 @@ def merge_annotations(dir: str, output: str, bed: str | None):
             with open(fname) as infile:
                 outfile.write(infile.read())
 
-
     try:
         data = pd.read_csv(output, sep="\t", header=None)
         data.sort_values(by=[0, 1], inplace=True)
-        data.to_csv(output, header=False, index=False, sep="\t", columns=[0, 3, 5, 1, 2])
-      
+        data.to_csv(
+            output, header=False, index=False, sep="\t", columns=[0, 3, 5, 1, 2]
+        )
+
         if bed is not None:
             data.reset_index(inplace=True, drop=True)
-            data[3] = [f"{row[3]}_{index+1}" for index, row in df.iterrows()]
+            data[3] = [f"{row[3]}_{index + 1}" for index, row in df.iterrows()]
             data.to_csv(bed, header=False, index=False, sep="\t")
-        
 
     except pd.errors.EmptyDataError:
         logging.info("No sequences matched to HMM(s)")
@@ -46,7 +46,6 @@ def merge_annotations(dir: str, output: str, bed: str | None):
         if bed is not None:
             out = open(bed, "w+")
             out.close()
-
 
 
 def annotate_genome(
@@ -64,7 +63,7 @@ def annotate_genome(
 
     try:
         os.makedirs(tmpdir, exist_ok=False)
-    
+
     except FileExistsError:
         shutil.rmtree(tmpdir)
         os.makedirs(tmpdir, exist_ok=False)
