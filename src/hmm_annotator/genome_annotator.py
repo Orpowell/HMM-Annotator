@@ -35,7 +35,7 @@ def merge_annotations(dir: str, output: str, bed: str | None):
 
         if bed is not None:
             data.reset_index(inplace=True, drop=True)
-            data[3] = [f"{row[3]}_{index + 1}" for index, row in df.iterrows()]
+            data[3] = [f"{row[3]}_{index + 1}" for index, row in data.iterrows()]
             data.to_csv(bed, header=False, index=False, sep="\t")
 
     except pd.errors.EmptyDataError:
