@@ -4,7 +4,7 @@ HMM-annotator annotates DNA sequences using HMM profiles.
 
 ## Installation
 
-HMM-annotator has only been tested using Python 3.10.14. Therefore, we recommend installing HMM-anntotar in an environment using conda or venv.
+HMM-annotator has only been tested using Python 3.10.14. Therefore, we recommend installing HMM-annotator in an environment using conda or venv.
 
 ### Download HMM-Annotator
 
