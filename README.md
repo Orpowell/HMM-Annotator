@@ -8,7 +8,7 @@ HMM-annotator has only been tested using Python 3.10.14. Therefore, we recommend
 
 ### Download HMM-Annotator
 
-    git clone https://github.com/orpowell/HMM-annotator.git
+    git clone https://github.com/Orpowell/HMM-Annotator.git
     cd HMM-annotator
 
 ### Installion with venv
